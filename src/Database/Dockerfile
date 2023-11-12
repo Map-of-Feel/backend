@@ -2,7 +2,7 @@ FROM postgres:latest as final
 
 # escape=\
 
-COPY ./src/Database/Migrations/all-idempotent.sql all-idempotent.sql
+COPY Migrations/all-idempotent.sql all-idempotent.sql
 
 # ARG host
 # ARG database

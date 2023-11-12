@@ -4,7 +4,6 @@ services:
   server:
     build:
       context: .
-      dockerfile: src\Backend\Dockerfile
       target: final
     ports:
       - 8080:80
@@ -16,8 +15,7 @@ services:
 
   migrations:
     build:
-      context: .
-      dockerfile: src\Database\Dockerfile
+      context: src/Database
       target: final
     depends_on:
       database:
