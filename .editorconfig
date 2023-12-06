@@ -366,3 +366,9 @@ dotnet_naming_style.s_camelcase.capitalization = camel_case
 # experimental
 csharp_wrap_arguments_style = chop_always
 csharp_wrap_parameters_style = chop_always
+
+
+#### Configration for Errors, Warnings and Suggestions ####
+[*.cs]
+dotnet_diagnostic.RMG012.severity = error # Unmapped target member
+dotnet_diagnostic.RMG020.severity = error # Unmapped source member
