@@ -3,6 +3,7 @@ using Backend;
 using Backend.Services;
 
 using Database.Data;
+using Database.Models;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -10,13 +11,19 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Logging.AddConsole();
 
+builder.Services.AddAuthorization();
+
+builder.Services.AddDatabase(builder.Configuration);
+builder.Services.AddTransient<IEmotionService, EmotionService>();
+
+builder.Services
+    .AddIdentityApiEndpoints<AppUser>()
+    .AddEntityFrameworkStores<MapOfFeelContext>();
+
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-builder.Services.AddDatabase(builder.Configuration);
-builder.Services.AddTransient<IEmotionService, EmotionService>();
 
 var app = builder.Build();
 
@@ -47,6 +54,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthorization();
 
 app.MapApi();
 

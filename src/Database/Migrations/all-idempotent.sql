@@ -24,7 +24,7 @@ DO $EF$
 BEGIN
     IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20231107141454_Init') THEN
     INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
-    VALUES ('20231107141454_Init', '7.0.13');
+    VALUES ('20231107141454_Init', '8.0.0');
     END IF;
 END $EF$;
 COMMIT;

@@ -3,12 +3,13 @@ using System.Linq.Expressions;
 
 using Database.Models;
 
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Database.Data;
 
-public sealed class MapOfFeelContext : DbContext
+public sealed class MapOfFeelContext : IdentityDbContext<AppUser>
 {
     public DbSet<Emotion> Emotions { get; set; }
 

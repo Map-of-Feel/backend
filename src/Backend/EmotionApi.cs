@@ -13,7 +13,8 @@ public static class EmotionApi
     public static void MapEmotionApi(this RouteGroupBuilder group)
     {
         group.MapGet("/", GetEmotionsAsync);
-        group.MapPost("/", CreateEmotionAsync);
+        group.MapPost("/", CreateEmotionAsync)
+            .RequireAuthorization();
     }
 
     public static async Task<Ok<List<EmotionDto>>> GetEmotionsAsync(

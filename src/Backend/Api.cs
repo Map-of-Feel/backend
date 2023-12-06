@@ -1,3 +1,5 @@
+using Database.Models;
+
 namespace Backend;
 
 public static class Api
@@ -7,6 +9,11 @@ public static class Api
         var apiGroup = builder
             .MapGroup("/api")
             .WithOpenApi();
+
+        apiGroup
+            .MapGroup("/account")
+            //.WithGroupName("IdentityApi")
+            .MapIdentityApi<AppUser>();
 
         apiGroup
             .MapGroup("/emotions")
