@@ -23,8 +23,15 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment() || true)
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwagger(c =>
+    {
+        c.RouteTemplate = "api/docs/{documentname}/swagger.json";
+    });
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("../docs/v1/swagger.json", "Backend V1");
+        c.RoutePrefix = "api/ui";
+    });
 }
 
 if (app.Environment.IsDevelopment())
