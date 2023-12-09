@@ -13,6 +13,7 @@ public static class Api
         apiGroup
             .MapGroup("/account")
             //.WithGroupName("IdentityApi")
+            .MapUserManagementApi()
             .MapIdentityApi<AppUser>();
 
         apiGroup

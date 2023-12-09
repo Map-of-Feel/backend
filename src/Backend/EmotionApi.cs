@@ -1,4 +1,6 @@
-﻿using Backend.Models;
+﻿using System.Security.Claims;
+
+using Backend.Models;
 using Backend.Services;
 
 using Database.Models;
@@ -10,11 +12,15 @@ namespace Backend;
 
 public static class EmotionApi
 {
-    public static void MapEmotionApi(this RouteGroupBuilder group)
+    public static RouteGroupBuilder MapEmotionApi(this RouteGroupBuilder group)
     {
         group.MapGet("/", GetEmotionsAsync);
         group.MapPost("/", CreateEmotionAsync)
-            .RequireAuthorization();
+            .RequireAuthorization(AppPolicy.HeadEditorsOnly);
+        group.MapDelete("/", DeleteEmotionAsync)
+            .RequireAuthorization(AppPolicy.HeadEditorsOnly);
+
+        return group;
     }
 
     public static async Task<Ok<List<EmotionDto>>> GetEmotionsAsync(
@@ -35,5 +41,18 @@ public static class EmotionApi
         entity = await emotionService.AddEmotion(entity);
 
         return TypedResults.Ok(entity.Map());
+    }
+
+    public static async Task<Ok> DeleteEmotionAsync(
+        [FromBody] EmotionDto emotion,
+        [FromServices] IEmotionService emotionService,
+        ClaimsPrincipal user)
+    {
+
+        var entity = Mapper.Map(emotion);
+
+        await emotionService.DeleteEmotion(entity);
+
+        return TypedResults.Ok();
     }
 }

@@ -10,6 +10,8 @@ public interface IEmotionService
     Task<IReadOnlyList<Emotion>> GetAllEmotionsAsync();
 
     Task<Emotion> AddEmotion(Emotion emotion);
+
+    Task DeleteEmotion(Emotion emotion);
 }
 
 public sealed class EmotionService : IEmotionService
@@ -32,6 +34,18 @@ public sealed class EmotionService : IEmotionService
         _ = await _context.SaveChangesAsync();
 
         return newEntity.Entity;
+    }
+
+    public async Task DeleteEmotion(Emotion emotion)
+    {
+        var entities = await _context
+            .Emotions
+            .Where(e => e.Id == emotion.Id)
+            .ToListAsync();
+
+        _context.Emotions.RemoveRange(entities);
+
+        await _context.SaveChangesAsync();
     }
 
     public async Task<IReadOnlyList<Emotion>> GetAllEmotionsAsync()
