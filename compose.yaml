@@ -12,6 +12,12 @@ services:
         condition: service_healthy
       migrations:
         condition: service_completed_successfully
+    environment:
+      POSTGRES_HOST: database
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mapoffeel
+      HTTP_PORTS: 80
 
   migrations:
     build:
