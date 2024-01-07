@@ -8,9 +8,9 @@ public class EmotionDefaultComposePart
 {
     public Guid Id { get; set; }
 
-    public Emotion Emotion { get; set; }
+    public Emotion Emotion { get; set; } = null!;
 
-    public Emotion PartEmotion { get; set; }
+    public Emotion PartEmotion { get; set; } = null!;
 
     public decimal PartValue { get; set; }
 }

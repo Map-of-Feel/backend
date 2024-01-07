@@ -352,3 +352,37 @@ BEGIN
 END $EF$;
 COMMIT;
 
+START TRANSACTION;
+
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20240107124154_MakesLocalizedInfosUnique') THEN
+    DROP INDEX "IX_LocalizedEmotionInfo_EmotionId";
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20240107124154_MakesLocalizedInfosUnique') THEN
+    UPDATE "AspNetUsers" SET "ConcurrencyStamp" = 'e36014bf-7df1-46e6-9001-445fe4bacc9d', "SecurityStamp" = 'fdf2d07a-0e0f-4f7e-995b-d6e13bdcc145'
+    WHERE "Id" = '153dbfe4-1b83-49ce-b7f7-41612d94a150';
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20240107124154_MakesLocalizedInfosUnique') THEN
+    CREATE UNIQUE INDEX "IX_LocalizedEmotionInfo_EmotionId_Lcid" ON "LocalizedEmotionInfo" ("EmotionId", "Lcid");
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20240107124154_MakesLocalizedInfosUnique') THEN
+    INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+    VALUES ('20240107124154_MakesLocalizedInfosUnique', '8.0.0');
+    END IF;
+END $EF$;
+COMMIT;
+

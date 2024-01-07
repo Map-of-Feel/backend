@@ -21,13 +21,13 @@ public sealed class Emotion
 
     public bool IsDeleted { get; set; }
 
-    public string Color { get; set; }
+    public string Color { get; set; } = string.Empty;
 
     public IList<LocalizedEmotionInfo> LocalizedInfos { get; set; } = Array.Empty<LocalizedEmotionInfo>();
 
-    public IList<EmotionDefaultComposePart> DefaultComposeParts { get; set; }
+    public IList<EmotionDefaultComposePart> DefaultComposeParts { get; set; } = Array.Empty<EmotionDefaultComposePart>();
 
-    public IList<UserDefinedComposition> UserDefinedCompositions { get; set; }
+    public IList<UserDefinedComposition> UserDefinedCompositions { get; set; } = Array.Empty<UserDefinedComposition>();
 }
 
 internal sealed class EmotionConfiguration : IEntityTypeConfiguration<Emotion>

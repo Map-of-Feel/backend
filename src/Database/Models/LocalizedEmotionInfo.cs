@@ -13,6 +13,8 @@ public class LocalizedEmotionInfo
 
     public string Lcid { get; set; } = null!;
 
+    public Guid EmotionId { get; set; }
+
     public virtual Emotion Emotion { get; set; } = null!;
 
     public string LocalizedName { get; set; }
@@ -29,5 +31,8 @@ internal sealed class LocalizedEmotionInfoConfiguration : IEntityTypeConfigurati
         builder
             .HasOne(e => e.Emotion)
             .WithMany(e => e.LocalizedInfos);
+
+        builder.HasIndex(e => new { e.EmotionId, e.Lcid })
+            .IsUnique();
     }
 }
