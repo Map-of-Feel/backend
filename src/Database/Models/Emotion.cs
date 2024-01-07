@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Database.Models;
 
 [EntityTypeConfiguration(typeof(EmotionConfiguration))]
-public sealed class Emotion
+public class Emotion
 {
     [Required]
     public Guid Id { get; set; }
@@ -23,11 +23,11 @@ public sealed class Emotion
 
     public string Color { get; set; } = string.Empty;
 
-    public IList<LocalizedEmotionInfo> LocalizedInfos { get; set; } = Array.Empty<LocalizedEmotionInfo>();
+    public virtual ICollection<LocalizedEmotionInfo> LocalizedInfos { get; set; } = null!;
 
-    public IList<EmotionDefaultComposePart> DefaultComposeParts { get; set; } = Array.Empty<EmotionDefaultComposePart>();
+    public IList<EmotionDefaultComposePart> DefaultComposeParts { get; set; } = new List<EmotionDefaultComposePart>();
 
-    public IList<UserDefinedComposition> UserDefinedCompositions { get; set; } = Array.Empty<UserDefinedComposition>();
+    public IList<UserDefinedComposition> UserDefinedCompositions { get; set; } = new List<UserDefinedComposition>();
 }
 
 internal sealed class EmotionConfiguration : IEntityTypeConfiguration<Emotion>
@@ -36,6 +36,10 @@ internal sealed class EmotionConfiguration : IEntityTypeConfiguration<Emotion>
     {
         builder.HasKey(e => e.Id);
 
-        builder.HasMany(e => e.LocalizedInfos).WithOne(e => e.Emotion);
+        builder.HasMany(e => e.LocalizedInfos)
+            .WithOne(e => e.Emotion)
+            .HasForeignKey(e => e.EmotionId);
+
+        builder.Navigation(e => e.LocalizedInfos);
     }
 }

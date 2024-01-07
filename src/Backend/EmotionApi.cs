@@ -20,6 +20,10 @@ public static class EmotionApi
         group.MapDelete("/", DeleteEmotionAsync)
             .RequireAuthorization(AppPolicy.HeadEditorsOnly);
 
+        group.MapPost("/changeName", ChangeEmotionNameAsync);
+        group.MapPost("/localizedInfo", AddLocalizedInfo);
+        group.MapPost("/changeLocalizedInfo", UpdateLocalizedEmotionInfo);
+
         return group;
     }
 
@@ -31,6 +35,19 @@ public static class EmotionApi
         return TypedResults.Ok(value.Map().ToList());
     }
 
+    public static async Task<IResult> UpdateLocalizedEmotionInfo(
+        [FromQuery] Guid emotionId,
+        [FromBody] LocalizedEmotionInfoDto info,
+        [FromServices] IEmotionService emotionService)
+    {
+        var mappedInfo = info.Map();
+        mappedInfo.EmotionId = emotionId;
+
+        var entity = await emotionService.UpdateLocalizedEmotionInfo(mappedInfo);
+
+        return TypedResults.Ok(entity.Map());
+    }
+
     public static async Task<Ok<EmotionDto>> CreateEmotionAsync(
         [FromBody] EmotionDto newEmotion,
         [FromServices] IEmotionService emotionService)
@@ -39,6 +56,42 @@ public static class EmotionApi
 
         entity.Id = Guid.NewGuid();
         entity = await emotionService.AddEmotion(entity);
+
+        return TypedResults.Ok(entity.Map());
+    }
+
+    public static async Task<IResult> ChangeEmotionNameAsync(
+        [FromQuery] Guid emotionId,
+        [FromQuery] string newName,
+        [FromServices] IEmotionService emotionService)
+    {
+        var entity = await emotionService.ChangeEmotionName(emotionId, newName);
+
+        if (entity is null)
+        {
+            return TypedResults.NotFound();
+        }
+
+        return TypedResults.Ok(entity.Map());
+    }
+
+    public static async Task<IResult> AddLocalizedInfo(
+        [FromQuery] Guid emotionId,
+        [FromBody] LocalizedEmotionInfoDto info,
+        [FromServices] IEmotionService emotionService)
+    {
+        var culture = System.Globalization.CultureInfo.GetCultureInfo(info.Lcid);
+        info.Lcid = culture.Name;
+
+        var x = info.Map();
+        x.Id = Guid.NewGuid();
+
+        var entity = await emotionService.AddLocalizedInfo(emotionId, x);
+
+        if (entity is null)
+        {
+            return TypedResults.NotFound();
+        }
 
         return TypedResults.Ok(entity.Map());
     }

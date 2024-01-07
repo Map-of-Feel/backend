@@ -4,10 +4,15 @@ public sealed class EmotionDto
 {
     public Guid Id { get; set; }
 
-    /// <summary>
-    /// The english name of the emotion
-    /// </summary>
-    public string Name { get; set; } = string.Empty;
+    public string Name { get; set; } = null!;
 
     public bool IsCoreEmotion { get; set; }
+
+    public string Color { get; set; } = null!;
+
+    public IList<LocalizedEmotionInfoDto> LocalizedInfos { get; set; } = Array.Empty<LocalizedEmotionInfoDto>();
+
+    public IList<EmotionDefaultComposePartDto> DefaultComposeParts { get; set; } = new List<EmotionDefaultComposePartDto>();
+
+    public IList<UserDefinedCompositionDto> UserDefinedCompositions { get; set; } = new List<UserDefinedCompositionDto>();
 }
