@@ -236,3 +236,119 @@ BEGIN
 END $EF$;
 COMMIT;
 
+START TRANSACTION;
+
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20240107121859_AddEmotionInfos') THEN
+    ALTER TABLE "Emotions" ADD "Color" text NOT NULL DEFAULT '';
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20240107121859_AddEmotionInfos') THEN
+    CREATE TABLE "EmotionDefaultComposePart" (
+        "Id" uuid NOT NULL,
+        "EmotionId" uuid NOT NULL,
+        "PartEmotionId" uuid NOT NULL,
+        "PartValue" numeric NOT NULL,
+        CONSTRAINT "PK_EmotionDefaultComposePart" PRIMARY KEY ("Id"),
+        CONSTRAINT "FK_EmotionDefaultComposePart_Emotions_EmotionId" FOREIGN KEY ("EmotionId") REFERENCES "Emotions" ("Id") ON DELETE CASCADE,
+        CONSTRAINT "FK_EmotionDefaultComposePart_Emotions_PartEmotionId" FOREIGN KEY ("PartEmotionId") REFERENCES "Emotions" ("Id") ON DELETE CASCADE
+    );
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20240107121859_AddEmotionInfos') THEN
+    CREATE TABLE "LocalizedEmotionInfo" (
+        "Id" uuid NOT NULL,
+        "Lcid" text NOT NULL,
+        "EmotionId" uuid NOT NULL,
+        "LocalizedName" text NOT NULL,
+        "LocalizedDesciption" text NOT NULL,
+        CONSTRAINT "PK_LocalizedEmotionInfo" PRIMARY KEY ("Id"),
+        CONSTRAINT "FK_LocalizedEmotionInfo_Emotions_EmotionId" FOREIGN KEY ("EmotionId") REFERENCES "Emotions" ("Id") ON DELETE CASCADE
+    );
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20240107121859_AddEmotionInfos') THEN
+    CREATE TABLE "UserDefinedComposition" (
+        "Id" uuid NOT NULL,
+        "EmotionId" uuid NOT NULL,
+        "PartEmotionId" uuid NOT NULL,
+        "PartValue" numeric NOT NULL,
+        "UserId" text NOT NULL,
+        CONSTRAINT "PK_UserDefinedComposition" PRIMARY KEY ("Id"),
+        CONSTRAINT "FK_UserDefinedComposition_AspNetUsers_UserId" FOREIGN KEY ("UserId") REFERENCES "AspNetUsers" ("Id") ON DELETE CASCADE,
+        CONSTRAINT "FK_UserDefinedComposition_Emotions_EmotionId" FOREIGN KEY ("EmotionId") REFERENCES "Emotions" ("Id") ON DELETE CASCADE,
+        CONSTRAINT "FK_UserDefinedComposition_Emotions_PartEmotionId" FOREIGN KEY ("PartEmotionId") REFERENCES "Emotions" ("Id") ON DELETE CASCADE
+    );
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20240107121859_AddEmotionInfos') THEN
+    UPDATE "AspNetUsers" SET "ConcurrencyStamp" = '14078ed8-ee9e-41b7-b702-d8d5a03eeeeb', "SecurityStamp" = 'a91c9c82-e72d-4ac1-894c-40a7dc7ed0e0'
+    WHERE "Id" = '153dbfe4-1b83-49ce-b7f7-41612d94a150';
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20240107121859_AddEmotionInfos') THEN
+    CREATE INDEX "IX_EmotionDefaultComposePart_EmotionId" ON "EmotionDefaultComposePart" ("EmotionId");
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20240107121859_AddEmotionInfos') THEN
+    CREATE INDEX "IX_EmotionDefaultComposePart_PartEmotionId" ON "EmotionDefaultComposePart" ("PartEmotionId");
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20240107121859_AddEmotionInfos') THEN
+    CREATE INDEX "IX_LocalizedEmotionInfo_EmotionId" ON "LocalizedEmotionInfo" ("EmotionId");
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20240107121859_AddEmotionInfos') THEN
+    CREATE INDEX "IX_UserDefinedComposition_EmotionId" ON "UserDefinedComposition" ("EmotionId");
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20240107121859_AddEmotionInfos') THEN
+    CREATE INDEX "IX_UserDefinedComposition_PartEmotionId" ON "UserDefinedComposition" ("PartEmotionId");
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20240107121859_AddEmotionInfos') THEN
+    CREATE INDEX "IX_UserDefinedComposition_UserId" ON "UserDefinedComposition" ("UserId");
+    END IF;
+END $EF$;
+
+DO $EF$
+BEGIN
+    IF NOT EXISTS(SELECT 1 FROM "__EFMigrationsHistory" WHERE "MigrationId" = '20240107121859_AddEmotionInfos') THEN
+    INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+    VALUES ('20240107121859_AddEmotionInfos', '8.0.0');
+    END IF;
+END $EF$;
+COMMIT;
+

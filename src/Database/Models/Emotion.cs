@@ -20,6 +20,14 @@ public sealed class Emotion
     public bool IsCoreEmotion { get; set; }
 
     public bool IsDeleted { get; set; }
+
+    public string Color { get; set; }
+
+    public IList<LocalizedEmotionInfo> LocalizedInfos { get; set; } = Array.Empty<LocalizedEmotionInfo>();
+
+    public IList<EmotionDefaultComposePart> DefaultComposeParts { get; set; }
+
+    public IList<UserDefinedComposition> UserDefinedCompositions { get; set; }
 }
 
 internal sealed class EmotionConfiguration : IEntityTypeConfiguration<Emotion>
@@ -27,5 +35,7 @@ internal sealed class EmotionConfiguration : IEntityTypeConfiguration<Emotion>
     public void Configure(EntityTypeBuilder<Emotion> builder)
     {
         builder.HasKey(e => e.Id);
+
+        builder.HasMany(e => e.LocalizedInfos).WithOne(e => e.Emotion);
     }
 }
