@@ -19,6 +19,7 @@ public sealed class MapOfFeelContext : IdentityDbContext<AppUser, AppRole, strin
     public MapOfFeelContext(DbContextOptions<MapOfFeelContext> options)
        : base(options)
     {
+
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

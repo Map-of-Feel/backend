@@ -3,6 +3,7 @@ using System;
 using Database.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Database.Migrations
 {
     [DbContext(typeof(MapOfFeelContext))]
-    partial class MapOfFeelContextModelSnapshot : ModelSnapshot
+    [Migration("20240107121859_AddEmotionInfos")]
+    partial class AddEmotionInfos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -136,7 +139,7 @@ namespace Database.Migrations
                         {
                             Id = "153dbfe4-1b83-49ce-b7f7-41612d94a150",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e36014bf-7df1-46e6-9001-445fe4bacc9d",
+                            ConcurrencyStamp = "14078ed8-ee9e-41b7-b702-d8d5a03eeeeb",
                             Email = "timo_weike@gmx.de",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
@@ -144,7 +147,7 @@ namespace Database.Migrations
                             NormalizedUserName = "TIMO_WEIKE@GMX.DE",
                             PasswordHash = "AQAAAAIAAYagAAAAEBHi9XJZFbM7BHe5DenM+akwUKWspGnBUx+TJFXOQvVJ1iTNuNMQWyaOQfb3VIejdQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "fdf2d07a-0e0f-4f7e-995b-d6e13bdcc145",
+                            SecurityStamp = "a91c9c82-e72d-4ac1-894c-40a7dc7ed0e0",
                             TwoFactorEnabled = false,
                             UserName = "timo_weike@gmx.de"
                         });
@@ -222,8 +225,7 @@ namespace Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EmotionId", "Lcid")
-                        .IsUnique();
+                    b.HasIndex("EmotionId");
 
                     b.ToTable("LocalizedEmotionInfo");
                 });

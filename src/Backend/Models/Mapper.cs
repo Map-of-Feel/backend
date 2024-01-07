@@ -62,4 +62,27 @@ public static partial class Mapper
     public static partial IEnumerable<AppUserDto> Map(this IEnumerable<AppUser> emotions);
     public static partial IEnumerable<AppUser> Map(this IEnumerable<AppUserDto> emotions);
     #endregion
+
+    #region 
+    [MapperIgnoreSource(nameof(LocalizedEmotionInfo.Emotion))]
+    [MapperIgnoreSource(nameof(LocalizedEmotionInfo.EmotionId))]
+    public static partial LocalizedEmotionInfoDto Map(this LocalizedEmotionInfo info);
+    [MapperIgnoreTarget(nameof(LocalizedEmotionInfo.Emotion))]
+    [MapperIgnoreTarget(nameof(LocalizedEmotionInfo.EmotionId))]
+    public static partial LocalizedEmotionInfo Map(this LocalizedEmotionInfoDto info);
+    #endregion
+
+    #region 
+    [MapperIgnoreSource(nameof(EmotionDefaultComposePart.Emotion))]
+    public static partial EmotionDefaultComposePartDto Map(this EmotionDefaultComposePart obj);
+    [MapperIgnoreTarget(nameof(EmotionDefaultComposePart.Emotion))]
+    public static partial EmotionDefaultComposePart Map(this EmotionDefaultComposePartDto obj);
+    #endregion
+
+    #region
+    [MapperIgnoreSource(nameof(EmotionDefaultComposePart.Emotion))]
+    public static partial UserDefinedCompositionDto Map(this UserDefinedComposition obj);
+    [MapperIgnoreTarget(nameof(EmotionDefaultComposePart.Emotion))]
+    public static partial UserDefinedComposition Map(this UserDefinedCompositionDto obj);
+    #endregion
 }
